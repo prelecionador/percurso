@@ -1,0 +1,149 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      height: 100vh;
+      background: #5a617b;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Oswald', sans-serif;
+      overflow: hidden;
+      position: relative;
+      transition: background 1.5s ease-in-out;
+    }
+    body.fase2 { background: radial-gradient(circle at center, #8fb7ff, #5888fe); }
+    body.fase3 { background: radial-gradient(circle at center, #ffffff, #bce4ee); }
+    body.fase4 { background: radial-gradient(circle at center, #fffae6, #ffeaa7); }
+    body.fase5 { background: radial-gradient(circle at center, #e6ffe6, #a8ffb3); }
+    body.fase6 { background: radial-gradient(circle at center, #ffe6f0, #ff99cc); }
+    body.fase7 { background: radial-gradient(circle at center, #ffffff, #dbd5d8); }
+
+    .circle {
+      width: 500px; height: 500px;
+      background: #f9f7f1;
+      border-radius: 50%;
+      display: flex; justify-content: center; align-items: center;
+      transition: all 1s ease;
+      position: relative;
+      z-index: 2; flex-direction: column;
+    }
+    .circle.expandido {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      border-radius: 0;
+    }
+    h2.title {
+      text-align: center;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 3;
+      color: #000;
+      transition: transform 0.4s ease;
+    }
+    .imagem {
+      display: none;
+      position: absolute;
+      top: 10%;
+      z-index: 4;
+      width: 200px;
+    }
+    #botao-comecar {
+      display: none;
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 999;
+      border: none;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #ffffff99;
+      transition: all 0.3s ease;
+    }
+    button:hover { transform: scale(1.05); }
+    button, input {
+      padding: 10px 20px;
+      margin-top: 10px;
+      font-family: Oswald, sans-serif;
+    }
+    input { padding: 8px; }
+
+    .fase-container {
+      display: none;
+      position: absolute;
+      z-index: 10;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: rgb(0, 0, 0);
+    }
+    .fase-container p { font-family: Montserrat, sans-serif; }
+    h2.title.hovered { transform: scale(1.1); }
+    .circle.hovered { transform: scale(1.1); }
+
+    #fase7 {
+      color: rgb(0, 0, 0);
+      font-family: 'Oswald', sans-serif;
+    }
+
+    #fase7 h1, #fase7 h3, #fase7 p, #botao-reinicio {
+      margin: 20px 0;
+      transition: opacity 1s ease;
+    }
+
+    #botao-reinicio {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #fff;
+      color: #111;
+      border: none;
+      border-radius: 5px;
+      box-shadow: 0 0 10px #ffffff33;
+    }
+
+    input,
+button {
+  display: block;
+  margin: 10px auto;
+  text-align: center;
+}
+
+input {
+  width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #fff;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 10px 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+  background-color: #f0f0f0;
+}
+
+.circle:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.circle:hover .title {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+
+.circle,
+.title {
+  transition: transform 0.3s ease;
+}
