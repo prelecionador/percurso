@@ -1,393 +1,89 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <link rel="stylesheet" href="styles.css">
   <meta charset="UTF-8">
-  <title>MrRoboot</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  <title>Percurso Robótica</title>
 
-    body {
-      height: 100vh;
-      background: #111;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-      flex-direction: column;
-      position: relative;
-      transition: background 1s ease;
-    }
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-    .circle {
-      width: 200px;
-      height: 200px;
-      background: #1e90ff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      transition: all 0.6s ease;
-      z-index: 2;
-    }
-
-    .circle span {
-      color: white;
-      font-size: 24px;
-      font-weight: bold;
-      cursor: pointer;
-      position: relative;
-      z-index: 3;
-      transition: all 0.3s ease;
-      transform: translateY(0) scale(1);
-    }
-
-    .circle:not(.locked):hover {
-      transform: scale(1.1);
-    }
-
-    .circle:not(.locked):hover span {
-      transform: translateY(0) scale(1.2);
-    }
-
-    .expanded {
-      width: 100vw;
-      height: 100vh;
-      border-radius: 0;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
-    }
-
-    .moved {
-      transform: translateY(100px) scale(1);
-      font-size: 32px;
-    }
-
-    .image-container {
-      display: none;
-      margin-top: 20px;
-      z-index: 5;
-      position: relative;
-    }
-
-    .image-container img {
-      width: 300px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    }
-
-    .start-btn, .next-btn {
-      display: none;
-      margin-top: 30px;
-      padding: 12px 24px;
-      font-size: 18px;
-      background-color: #1e90ff;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      cursor: pointer;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      transition: all 0.5s ease;
-      z-index: 10;
-      position: relative;
-    }
-
-    .start-btn:hover, .next-btn:hover {
-      background-color: #005ecb;
-    }
-
-    .fase {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      text-align: center;
-      animation: fadeIn 1s ease forwards;
-    }
-
-    .slide-up {
-      animation: slideUp 1s ease forwards;
-    }
-
-    .slide-down {
-      animation: slideDown 1s ease forwards;
-    }
-
-    .slide-left {
-      animation: slideLeft 1s ease forwards;
-    }
-
-    @keyframes slideUp {
-      to { transform: translateY(-100vh); opacity: 0; }
-    }
-
-    @keyframes slideDown {
-      to { transform: translateY(100vh); opacity: 0; }
-    }
-
-    @keyframes slideLeft {
-      to { transform: translateX(-100vw); opacity: 0; }
-    }
-
-    .frase, .frase2, .next-btn {
-      display: none;
-      margin-top: 20px;
-    }
-
-    .fase-img {
-      width: 250px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(255,255,255,0.3);
-      margin-bottom: 20px;
-    }
-
-    #faseTempo2 .next-btn {
-      background-color: #28a745;
-    }
-
-    #faseTempo2 .next-btn:hover {
-      background-color: #1e7e34;
-    }
-
-    #faseTempo3 h1 {
-      font-size: 32px;
-      color: #ffbbff;
-      margin-top: 20px;
-    }
-
-    #faseTempo3 .frase3 {
-      color: #fff;
-      font-style: italic;
-      margin: 10px 0;
-    }
-
-    #faseTempo3 .next-btn {
-      background-color: #ff66cc;
-    }
-
-    #faseTempo3 .next-btn:hover {
-      background-color: #cc3399;
-    }
-
-    #faseFinal {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: white;
-      z-index: 20;
-    }
-
-    #faseFinal iframe {
-      width: 560px;
-      height: 315px;
-      border: none;
-      border-radius: 12px;
-      margin: 20px 0;
-    }
-
-    #faseFinal h1, #faseFinal .fraseFinal, #faseFinal label, #faseFinal .next-btn {
-      display: none;
-    }
-
-    #faseFinal label {
-      margin-top: 20px;
-      font-size: 18px;
-    }
-
-    #faseFinal .next-btn {
-      background-color: #ffc107;
-      color: black;
-    }
-
-    #faseFinal .next-btn:hover {
-      background-color: #e0a800;
-    }
-
-    /* NOVA FASE EXTRA */
-    #faseExtra {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      text-align: center;
-      z-index: 30;
-    }
-
-    .fraseExtra {
-      margin: 10px 0;
-      display: none;
-    }
-
-    #faseExtra h1, #faseExtra .fraseExtra, #faseExtra .next-btn {
-      display: none;
-    }
-
-    #faseExtra .next-btn {
-      background-color: #00cc99;
-    }
-
-    #faseExtra .next-btn:hover {
-      background-color: #009977;
-    }
-  </style>
-
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
+  <div class="circle" id="circulo">
+    <h2 class="title" id="titulo">Percurso:<br>A História da Robótica</h2>
+  </div>
+  <img src="https://64.media.tumblr.com/3ac7988afa1a86fcb9e546a8ca777c6b/91ba6ed925f5fcbe-92/s1280x1920/c8792d20e670ca965eb48817e518401fb412bda3.gifv" class="imagem" id="imagem">
+  <button id="botao-comecar">Começar</button>
 
-  <div class="image-container" id="imageContainer">
-    <img src="https://s2.ezgif.com/tmp/ezgif-29cf77fe698737.gif" alt="Robô">
+  <!-- Fase 2 -->
+  <div class="fase-container" id="fase2">
+    <h1 id="titulo-fase2" style="display:none;"> Grécia Antiga – 350 a.C.</h1>
+    <iframe id="iframe-fase2" style="display:none;" src="https://scratch.mit.edu/projects/1190146755/embed" allowtransparency="true" width="485" height="402"></iframe>
+    <h3 id="subtitulo-fase2" style="display:none;">"Resolva as questões e vá para a próxima fase</h3>
+    <p id="frase1-fase2" style="display:none;">A palavra robótica vem do grego robota, que significa “trabalho forçado” ou “servo”, refletindo a ideia de máquinas que servem aos humanos</p>
+    <p id="frase2-fase2" style="display:none;">Em 350 a.C., Arquitas de Tarento criou um pássaro mecânico movido a vapor, considerado o primeiro autômato da história.</p>
+    <input id="input-fase2" style="display:none;" placeholder="Digite aqui"><br>
+    <button id="botao-avancar2" style="display:none;">Avançar</button>
   </div>
 
-  <div class="circle" id="circle">
-    <span id="name">MrRoboot</span>
+  <!-- Fase 3 -->
+  <div class="fase-container" id="fase3">
+    <h1 id="titulo-fase3" style="display:none;">Revolução Industrial – 1800</h1>
+    <iframe id="iframe-fase3" style="display:none;" width="300" height="200" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+    <h3 id="subtitulo-fase3" style="display:none;">Subtítulo</h3>
+    <p id="frase1-fase3" style="display:none;">A partir de 1801, com o tear de Jacquard, surgem máquinas controladas por cartões perfurados.</p>
+    <p id="frase2-fase3" style="display:none;">Em 1898, Nikola Tesla demonstrou um barco controlado por rádio, antecipando o controle remoto moderno</p>
+    <input id="input-fase3" style="display:none;" placeholder="Digite aqui"><br>
+    <button id="botao-avancar3" style="display:none;">Avançar</button>
   </div>
 
-  <button class="start-btn" id="startBtn">Começar</button>
-
-  <div class="fase" id="faseTempo1">
-    <h1>Fase do Tempo</h1>
-    <p class="frase" id="frase1">Frase Um</p>
-    <p class="frase" id="frase2">Frase Dois</p>
-    <button class="next-btn" id="nextBtn1">Next</button>
+  <!-- Fase 4 -->
+  <div class="fase-container" id="fase4">
+    <h1 id="titulo-fase4" style="display:none;">Pós-Guerra – 1950</h1>
+    <iframe id="iframe-fase4" style="display:none;" width="300" height="200" src="https://www.youtube.com/embed/ScMzIvxBSi4"></iframe>
+    <h3 id="subtitulo-fase4" style="display:none;">Subtítulo</h3>
+    <p id="frase1-fase4" style="display:none;">Em 1956, George Devol e Joseph Engelberger criam o primeiro robô industrial: o Unimate.</p>
+    <p id="frase2-fase4" style="display:none;">Durante as décadas de 1960 a 1980, a robótica se consolida na indústria e nas missões espaciais da NASA.</p>
+    <input id="input-fase4" style="display:none;" placeholder="Digite aqui"><br>
+    <button id="botao-avancar4" style="display:none;">Avançar</button>
   </div>
 
-  <div class="fase" id="faseTempo2">
-    <img src="https://i.imgur.com/NevMJnD.png" alt="Nova Fase" class="fase-img">
-    <h1>Fase do Tempo</h1>
-    <p class="frase2" id="frase21">Frase Um</p>
-    <p class="frase2" id="frase22">Frase Dois</p>
-    <button class="next-btn" id="nextBtn2">Next</button>
+  <!-- Fase 5 -->
+  <div class="fase-container" id="fase5">
+    <h1 id="titulo-fase5" style="display:none;">Era Digital – 2025</h1>
+    <iframe id="iframe-fase5" style="display:none;" width="300" height="200" src="https://www.youtube.com/embed/eY52Zsg-KVI"></iframe>
+    <h3 id="subtitulo-fase5" style="display:none;">Subtítulo</h3>
+    <p id="frase1-fase5" style="display:none;">Em 2025, robôs com inteligência artificial já são capazes de conversar, andar e auxiliar em hospitais e casas.</p>
+    <p id="frase2-fase5" style="display:none;">Com o avanço da IA, os robôs se tornam parte ativa do cotidiano humano, conectados a sistemas inteligentes.</p>
+    <input id="input-fase5" style="display:none;" placeholder="Digite aqui"><br>
+    <button id="botao-avancar5" style="display:none;">Avançar</button>
   </div>
 
-  <div class="fase" id="faseTempo3">
-    <img src="https://i.imgur.com/I9Ue2WQ.png" alt="Fase Final" class="fase-img">
-    <h1 id="titulo3" style="display:none;">Fase do Tempo</h1>
-    <p class="frase3" id="frase31" style="display:none;">Frase Um</p>
-    <p class="frase3" id="frase32" style="display:none;">Frase Dois</p>
-    <button class="next-btn" id="nextBtn3" style="display:none;">Next</button>
+  <!-- Fase 6 -->
+  <div class="fase-container" id="fase6">
+    <h1 id="titulo-fase6" style="display:none;">Futuro – 5025</h1>
+    <iframe id="iframe-fase6" style="display:none;" width="300" height="200" src="https://www.youtube.com/embed/VIDEO_ID"></iframe>
+    <h3 id="subtitulo-fase6" style="display:none;">Subtítulo</h3>
+    <p id="frase1-fase6" style="display:none;">No ano 5025, robôs desenvolvem consciência artificial e compartilham sentimentos por redes neurais.</p>
+    <p id="frase2-fase6" style="display:none;"> A robótica deixa de ser ferramenta e se torna extensão da humanidade em uma nova forma de vida híbrida.</p>
+    <input id="input-fase6" style="display:none;" placeholder="Digite aqui"><br>
+    <button id="botao-avancar6" style="display:none;">Avançar</button>
   </div>
 
-  <div class="fase" id="faseFinal">
-    <iframe id="videoFinal" src="https:scratch.mit.edu/projects/1045046431/embed" width="485" height="402" allowfullscreen></iframe>
-    <h1 id="tituloFinal">Título Final</h1>
-    <p class="fraseFinal" id="finalFrase1">Frase 1</p>
-    <p class="fraseFinal" id="finalFrase2">Frase 2</p>
-    <p class="fraseFinal" id="finalFrase3">Frase 3</p>
-    <label id="labelPergunta">Digite sua resposta:</label>
-    <input type="text" />
-    <button class="next-btn">Next</button>
+  <!-- Fase 7 -->
+  <div class="fase-container" id="fase7" style="display:none;">
+    <h1 id="titulo-fase7" style="display:none;">Você chegou ao fim!</h1>
+    <h3 id="subtitulo-fase7" style="display:none;">A história da robótica continua...</h3>
+    <p id="frase1-fase7" style="display:none;">As máquinas evoluem, mas a curiosidade humana vai além.</p>
+    <p id="frase2-fase7" style="display:none;">Continue explorando, aprendendo, criando.</p>
+    <button id="botao-reinicio" style="display:none;">Ir para o Início</button>
   </div>
 
-  <div class="fase" id="faseExtra">
-    <h1 id="tituloExtra">Título Final Extra</h1>
-    <p class="fraseExtra" id="extraFrase1">Frase Extra 1</p>
-    <p class="fraseExtra" id="extraFrase2">Frase Extra 2</p>
-    <p class="fraseExtra" id="extraFrase3">Frase Extra 3</p>
-    <button class="next-btn" id="finalNextBtn">Finalizar</button>
-  </div>
+  <script src="script.js"></script>
 
-  <script>
-    $(document).ready(function () {
-      $('#name').on('click', function () {
-        $('#circle').addClass('expanded locked');
-        $(this).addClass('moved').off().css('pointer-events', 'none');
-        $('#imageContainer').slideToggle(1000);
-        setTimeout(() => {
-          $('#startBtn').fadeIn(800);
-        }, 5000);
-      });
-
-      $('#startBtn').on('click', function () {
-        setTimeout(() => {
-          $('#circle, #imageContainer, #startBtn').addClass('slide-up');
-        }, 300);
-
-        setTimeout(() => {
-          $('#faseTempo1').css('display', 'flex');
-        }, 3300);
-
-        setTimeout(() => {
-          $('#frase1').fadeIn(800);
-        }, 8300);
-
-        setTimeout(() => {
-          $('#frase2').fadeIn(800);
-        }, 11300);
-
-        setTimeout(() => {
-          $('#nextBtn1').fadeIn(800);
-        }, 14300);
-      });
-
-      $('#nextBtn1').on('click', function () {
-        $('#faseTempo1').addClass('slide-down');
-        setTimeout(() => {
-          $('#faseTempo1').hide();
-          $('#faseTempo2').css('display', 'flex').hide().fadeIn(800);
-        }, 1300);
-        setTimeout(() => { $('#frase21').fadeIn(800); }, 6300);
-        setTimeout(() => { $('#frase22').fadeIn(800); }, 9300);
-        setTimeout(() => { $('#nextBtn2').fadeIn(800); }, 12300);
-      });
-
-      $('#nextBtn2').on('click', function () {
-        $('#faseTempo2').addClass('slide-left');
-        setTimeout(() => {
-          $('#faseTempo2').hide();
-          $('body').css('background', '#b366ff');
-        }, 1300);
-        setTimeout(() => {
-          $('#faseTempo3').css('display', 'flex').hide().fadeIn(800);
-        }, 4300);
-        setTimeout(() => { $('#titulo3').fadeIn(600); }, 6300);
-        setTimeout(() => { $('#frase31').fadeIn(800); }, 11300);
-        setTimeout(() => { $('#frase32').fadeIn(800); }, 14300);
-        setTimeout(() => { $('#nextBtn3').fadeIn(800); }, 17300);
-      });
-
-      $('#nextBtn3').on('click', function () {
-        $('#faseTempo3').addClass('slide-up');
-        setTimeout(() => {
-          $('#faseTempo3').hide();
-          $('#faseFinal').css('display', 'flex');
-        }, 2000);
-        setTimeout(() => { $('#videoFinal').fadeIn(800); }, 2500);
-        setTimeout(() => { $('#tituloFinal').fadeIn(800); }, 5500);
-        setTimeout(() => { $('#finalFrase1').fadeIn(800); }, 8500);
-        setTimeout(() => { $('#finalFrase2').fadeIn(800); }, 11500);
-        setTimeout(() => { $('#finalFrase3').fadeIn(800); }, 14500);
-        setTimeout(() => { $('#labelPergunta, #faseFinal input, #faseFinal .next-btn').fadeIn(800); }, 16500);
-      });
-
-      $('#faseFinal .next-btn').on('click', function () {
-        const resposta = $('#faseFinal input').val().trim();
-        if (resposta === '445') {
-          $('#faseFinal').addClass('slide-up');
-          setTimeout(() => {
-            $('#faseFinal').hide();
-            $('body').css('background', '#003366');
-            $('#faseExtra').css('display', 'flex');
-          }, 2000);
-          setTimeout(() => { $('#tituloExtra').fadeIn(800); }, 5000);
-          setTimeout(() => { $('#extraFrase1').fadeIn(800); }, 8000);
-          setTimeout(() => { $('#extraFrase2').fadeIn(800); }, 11000);
-          setTimeout(() => { $('#extraFrase3').fadeIn(800); }, 14000);
-          setTimeout(() => { $('#finalNextBtn').fadeIn(800); }, 17000);
-        }
-      });
-    });
-  </script>
 </body>
 </html>
