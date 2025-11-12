@@ -1,124 +1,187 @@
-* { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      height: 100vh;
-      background: #5a617b;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: 'Oswald', sans-serif;
-      overflow: hidden;
-      position: relative;
-      transition: background 1.5s ease-in-out;
-    }
-    body.fase2 { background: radial-gradient(circle at center, #8fb7ff, #5888fe); }
-    body.fase3 { background: radial-gradient(circle at center, #ffffff, #bce4ee); }
-    body.fase4 { background: radial-gradient(circle at center, #fffae6, #ffeaa7); }
-    body.fase5 { background: radial-gradient(circle at center, #e6ffe6, #a8ffb3); }
-    body.fase6 { background: radial-gradient(circle at center, #ffe6f0, #ff99cc); }
-    body.fase7 { background: radial-gradient(circle at center, #ffffff, #dbd5d8); }
-
-    .circle {
-      width: 500px; height: 500px;
-      background: #f9f7f1;
-      border-radius: 50%;
-      display: flex; justify-content: center; align-items: center;
-      transition: all 1s ease;
-      position: relative;
-      z-index: 2; flex-direction: column;
-    }
-
-    h1 {
-  color: #FF4500; /* ou a cor que preferir */
-  font-size: 48px;
-  text-shadow: 
-    2px 2px 0 #000,   /* sombra preta rente */
-    4px 4px 0 #444,   /* sombra cinza mais distante */
-    6px 6px 0 #777;   /* sombra clara mais longe */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+body {
+  height: 100vh;
+  background: #5a617b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Oswald', sans-serif;
+  overflow: hidden;
+  position: relative;
+  transition: background 1.5s ease-in-out;
+}
 
-    .circle.expandido {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      border-radius: 0;
-    }
-    h2.title {
-      text-align: center;
-      font-size: 24px;
-      cursor: pointer;
-      z-index: 3;
-      color: #000;
-      transition: transform 0.4s ease;
-    }
-    .imagem {
-      display: none;
-      position: absolute;
-      top: 0;
-      z-index: 4;
-      width: 200px;
-      width: 100%;
+/* FUNDOS */
+body.fase2 { background: radial-gradient(circle, #8fb7ff, #5888fe); }
+body.fase3 { background: radial-gradient(circle, #ffffff, #bce4ee); }
+body.fase4 { background: radial-gradient(circle, #fffae6, #ffeaa7); }
+body.fase5 { background: radial-gradient(circle, #e6ffe6, #a8ffb3); }
+body.fase6 { background: radial-gradient(circle, #ffe6f0, #ff99cc); }
+body.fase7 { background: radial-gradient(circle, #ffffff, #dbd5d8); }
+
+/* ✅ CÍRCULO RESPONSIVO */
+.circle {
+  width: min(70vw, 70vh);
+  height: min(70vw, 70vh);
+  background: #f9f7f1;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transition: all 1s ease;
+  position: relative;
+  z-index: 2;
+}
+
+/* ✅ TEXTO RESPONSIVO */
+h1 {
+  
+  font-size: clamp(24px, 6vw, 48px);
+  text-shadow: 
+    2px 2px 0 #000,
+    4px 4px 0 #444,
+    6px 6px 0 #777;
+  font-family: Bungee;
+  margin-bottom: 10px;
+}
+#titulo-fase2 {
+  color: #B74E19; /* dourado, por exemplo */
+}
+
+#titulo-fase3 {
+  color: #8C6239; /* laranja-industrial */
+}
+
+#titulo-fase4 {
+  color: #BFC5C7; /* azul pós-guerra */
+}
+
+#titulo-fase5 {
+  color: #F2C10F; /* verde era digital */
+}
+
+#titulo-fase6 {
+  color: #00FFF6; /* roxo futurista */
+}
+
+h2.title {
+  text-align: center;
+  font-size: clamp(16px, 4vw, 26px);
+  cursor: pointer;
+  z-index: 3;
+  color: #000;
+  transition: transform 0.4s ease;
+}
+
+h3 {
+  font-family: Bungee;
+  margin-bottom: 15px;
+
+}
+
+/* ✅ CIRCLE EXPANDED COBRE QUALQUER TELA */
+.circle.expandido {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+}
+
+/* IMAGEM RESPONSIVA */
+.imagem {
+  display: none;
+  position: absolute;
+  top: 0;
+  z-index: 4;
+  width: 100%;
   height: 100%;
-    }
-    #botao-comecar {
-      display: none;
-      position: absolute;
-      bottom: 10%;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      z-index: 999;
-      border: none;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 0 10px #ffffff99;
-      transition: all 0.3s ease;
-    }
-    button:hover { transform: scale(1.05); }
-    button, input {
-      padding: 10px 20px;
-      margin-top: 10px;
-      font-family: Oswald, sans-serif;
-    }
-    input { padding: 8px; }
+  object-fit: cover;
+}
 
-    .fase-container {
-      display: none;
-      position: absolute;
-      z-index: 10;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      color: rgb(0, 0, 0);
-    }
-    .fase-container p { font-family: Montserrat, sans-serif; }
-    h2.title.hovered { transform: scale(1.1); }
-    .circle.hovered { transform: scale(1.1); }
+/* BOTÃO COMEÇAR */
+#botao-comecar {
+  display: none;
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 25px;
+  font-size: clamp(14px, 3vw, 18px);
+  cursor: pointer;
+  z-index: 999;
+  border: none;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #ffffff99;
+  transition: all 0.3s ease;
+}
 
-    #fase7 {
-      color: rgb(0, 0, 0);
-      font-family: 'Oswald', sans-serif;
-    }
+button:hover { transform: scale(1.05); }
 
-    #fase7 h1, #fase7 h3, #fase7 p, #botao-reinicio {
-      margin: 20px 0;
-      transition: opacity 1s ease;
-    }
+/* INPUTS */
+button, input {
+  padding: 10px 20px;
+  margin-top: 10px;
+  font-family: Oswald, sans-serif;
+  font-size: clamp(12px, 3vw, 18px);
+}
 
-    #botao-reinicio {
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      background: #fff;
-      color: #111;
-      border: none;
-      border-radius: 5px;
-      box-shadow: 0 0 10px #ffffff33;
-    }
+/* CONTEÚDOS DAS FASES */
+.fase-container {
+  display: none;
+  position: absolute;
+  z-index: 10;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: rgb(0, 0, 0);
+}
 
-    input,
+.fase-container p {
+  font-family: Montserrat, sans-serif;
+  font-size: clamp(14px, 3vw, 20px);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* INTERAÇÕES */
+h2.title.hovered { transform: scale(1.1); }
+.circle.hovered { transform: scale(1.1); }
+
+/* FASE 7 */
+#fase7 {
+  color: rgb(0, 0, 0);
+  font-family: 'Oswald', sans-serif;
+}
+
+#fase7 h1,
+#fase7 h3,
+#fase7 p,
+#botao-reinicio {
+  margin: 20px 0;
+  transition: opacity 1s ease;
+}
+
+#botao-reinicio {
+  padding: 10px 20px;
+  font-size: clamp(14px, 3vw, 18px);
+  cursor: pointer;
+  background: #fff;
+  color: #111;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 0 10px #ffffff33;
+}
+
+/* INPUTS E BOTÕES */
+input,
 button {
   display: block;
   margin: 10px auto;
@@ -127,15 +190,13 @@ button {
 
 .dv1 {
   box-shadow: 0 0 10px #351e71cb;
-    width: 600px;
-    padding: 20px; 
-    margin: 10px auto;
-
-
+  width: min(90vw, 600px);
+  padding: 20px;
+  margin: 10px auto;
 }
 
 input {
-  width: 250px;
+  width: min(80vw, 250px);
   border: 1px solid #ccc;
   border-radius: 5px;
 }
@@ -155,6 +216,7 @@ button:hover {
   background-color: #f0f0f0;
 }
 
+/* ANIMAÇÕES NO CÍRCULO */
 .circle:hover {
   transform: scale(1.05);
   transition: transform 0.3s ease;
@@ -165,7 +227,22 @@ button:hover {
   transition: transform 0.3s ease;
 }
 
-.circle,
-.title {
-  transition: transform 0.3s ease;
+/* ✅ MEDIA QUERIES PARA GARANTIR COMPATIBILIDADE */
+@media (max-width: 600px) {
+  body {
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+
+  .circle {
+    width: 80vw;
+    height: 80vw;
+  }
+}
+
+@media (min-width: 1200px) {
+  .circle {
+    width: 500px;
+    height: 500px;
+  }
 }
